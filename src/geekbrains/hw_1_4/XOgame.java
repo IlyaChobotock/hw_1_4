@@ -113,17 +113,61 @@ public class XOgame {
         return true;
     }
 
-    public static boolean checkWin(char c) {
-        if (map[0][0] == c && map[0][1] == c && map[0][2] == c) {return true; }
-        if (map[1][0] == c && map[1][1] == c && map[1][2] == c) {return true; }
-        if (map[2][0] == c && map[2][1] == c && map[2][2] == c) {return true; }
+//    public static boolean checkWin(char c) {
+//        if (map[0][0] == c && map[0][1] == c && map[0][2] == c) {return true; }
+//        if (map[1][0] == c && map[1][1] == c && map[1][2] == c) {return true; }
+//        if (map[2][0] == c && map[2][1] == c && map[2][2] == c) {return true; }
+//
+//        if (map[0][0] == c && map[1][0] == c && map[2][0] == c) {return true; }
+//        if (map[0][1] == c && map[1][1] == c && map[2][1] == c) {return true; }
+//        if (map[0][2] == c && map[1][2] == c && map[2][2] == c) {return true; }
+//
+//        if (map[0][0] == c && map[1][1] == c && map[2][2] == c) {return true; }
+//        if (map[0][2] == c && map[1][1] == c && map[2][0] == c) {return true; }
 
-        if (map[0][0] == c && map[1][0] == c && map[2][0] == c) {return true; }
-        if (map[0][1] == c && map[1][1] == c && map[2][1] == c) {return true; }
-        if (map[0][2] == c && map[1][2] == c && map[2][2] == c) {return true; }
+    public static boolean checkWin (char c) {                       // Программа не работает, к сожалению;
 
-        if (map[0][0] == c && map[1][1] == c && map[2][2] == c) {return true; }
-        if (map[0][2] == c && map[1][1] == c && map[2][0] == c) {return true; }
+        int n = 4;
+        int delta = SIZE - n;
+        int num1 = 0;
+        int num2 = 0;
+        int num3 = 0;
+        int num4 = 0;
+        // Описание логики:
+        for (int i = 0; i <= delta; i++) {                          // Сначала перебираю точки начала верхнего левого угла квадрата со сторонами n x n, внутри которого существуют все возможные выигрыши;
+            for (int j = 0; j <= delta; j++) {                      // Получаю возможные точки начала в зоне delta x delta;
+
+                for (int k = i; k < (i + n); k++) {                 // От каждой возможной точки начала просматриваю внутри каждого квадрата n x n ходы человека и ИИ;
+                    for (int l = j; l < (j + n); l++) {
+                        if (k == l && map[k][l] == c) {             // Смотрю диагональ СЗ - ЮВ;
+                            num1++;                                 // Если нахожу ход, то считаю;
+                        }
+                        if (l == n - k + 1 && map[k][l] == c) {     // Аналогично диагональ СВ - ЮЗ;
+                            num2++;
+                        }
+                    }
+                }
+                if (num1 == n || num2 == n) {                       // Если досчитался до n, то говорим о выигрыше;
+                    return true;
+                }
+
+                for (int k = i; k < (i + n); k++) {                 // Аналогично с горизонталями и вертикалями;
+                    for (int l = j; l < (j + n); l++) {
+                        if (map[k][l] == c) {
+                            num3++;
+                        }
+                        if (map[l][k] == c) {
+                            num4++;
+                        }
+                    }
+                }
+                if (num3 == n || num4 == n) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 
 }
 
